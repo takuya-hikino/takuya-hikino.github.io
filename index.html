@@ -5,6 +5,62 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TisCreation</title>
   <style>
+    #password-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #0f0f13;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    #password-screen .lock-title {
+      font-size: 22px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    #password-screen input {
+      background: #16161f;
+      border: 1px solid #1e1e2e;
+      border-radius: 8px;
+      color: #f0f0f0;
+      font-size: 15px;
+      padding: 12px 20px;
+      width: 260px;
+      outline: none;
+      text-align: center;
+      letter-spacing: 0.1em;
+    }
+
+    #password-screen input:focus {
+      border-color: #a78bfa;
+    }
+
+    #password-screen button {
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 32px;
+      cursor: pointer;
+      width: 260px;
+    }
+
+    #password-screen .error {
+      font-size: 12px;
+      color: #f87171;
+      min-height: 16px;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -152,6 +208,32 @@
   </style>
 </head>
 <body>
+
+  <div id="password-screen">
+    <div class="lock-title">TisCreation</div>
+    <input type="password" id="pw-input" placeholder="パスワードを入力" onkeydown="if(event.key==='Enter')checkPW()">
+    <button onclick="checkPW()">ログイン</button>
+    <div class="error" id="pw-error"></div>
+  </div>
+
+  <script>
+    const CORRECT = "hikino0509";
+    function checkPW() {
+      const val = document.getElementById('pw-input').value;
+      if (val === CORRECT) {
+        document.getElementById('password-screen').style.display = 'none';
+        sessionStorage.setItem('auth', '1');
+      } else {
+        document.getElementById('pw-error').textContent = 'パスワードが違います';
+        document.getElementById('pw-input').value = '';
+      }
+    }
+    if (sessionStorage.getItem('auth') === '1') {
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('password-screen').style.display = 'none';
+      });
+    }
+  </script>
 
   <header>
     <div class="logo">TisCreation</div>
