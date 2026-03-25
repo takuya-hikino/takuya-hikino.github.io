@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ダッシュボード リサーチまとめ｜Englishおさる</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Helvetica Neue', 'Hiragino Kaku Gothic ProN', Arial, sans-serif;
+      background: #F5F7FA;
+      color: #1A1A2E;
+      min-height: 100vh;
+    }
+    header {
+      background: #1A1A2E;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header h1 { color: white; font-size: 18px; font-weight: 700; }
+    header span { color: rgba(255,255,255,0.45); font-size: 13px; margin-left: 8px; }
+    .tag {
+      background: rgba(255,107,53,0.2); color: #FF6B35;
+      border: 1px solid rgba(255,107,53,0.35);
+      font-size: 11px; font-weight: 700; padding: 3px 10px;
+      border-radius: 99px; letter-spacing: 0.5px;
+    }
+    main { max-width: 1100px; margin: 0 auto; padding: 36px 24px 80px; }
+
+    /* INTRO */
+    .intro {
+      background: white; border-radius: 14px; padding: 22px 24px;
+      margin-bottom: 40px; border: 1px solid #E8EAF0;
+      display: flex; gap: 32px;
+    }
+    .intro-item { flex: 1; }
+    .intro-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .intro-value { font-size: 14px; color: #1A1A2E; line-height: 1.6; }
+
+    /* SERVICE BLOCK */
+    .service-block { margin-bottom: 60px; }
+    .service-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #E8EAF0;
+    }
+    .service-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; flex-shrink: 0;
+    }
+    .icon-green  { background: linear-gradient(135deg, #11998e, #38ef7d); }
+    .icon-blue   { background: linear-gradient(135deg, #2980b9, #6dd5fa); }
+    .icon-dark   { background: linear-gradient(135deg, #232526, #414345); }
+    .service-title-wrap h2 { font-size: 20px; font-weight: 800; color: #1A1A2E; margin-bottom: 3px; }
+    .service-title-wrap p { font-size: 12px; color: #9CA3AF; }
+
+    /* 2-COL LAYOUT: mockup + cards */
+    .service-body {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* PHONE MOCKUP */
+    .phone-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .phone-label {
+      font-size: 11px; font-weight: 700; color: #9CA3AF;
+      text-transform: uppercase; letter-spacing: 1px;
+    }
+    .phone {
+      width: 240px;
+      background: #111;
+      border-radius: 36px;
+      padding: 12px 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 2px #2a2a2a;
+      position: relative;
+    }
+    .phone-notch {
+      width: 80px; height: 20px; background: #111;
+      border-radius: 0 0 14px 14px;
+      margin: 0 auto 6px;
+      position: relative; z-index: 2;
+    }
+    .phone-screen {
+      border-radius: 24px;
+      overflow: hidden;
+      min-height: 420px;
+      position: relative;
+    }
+
+    /* ===== STUDYSAPURI SCREEN ===== */
+    .ss-screen { background: #F0F4FF; min-height: 460px; }
+    .ss-header {
+      background: #1565C0;
+      padding: 12px 14px 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ss-logo { color: white; font-size: 13px; font-weight: 800; letter-spacing: -0.5px; }
+    .ss-search {
+      margin-left: auto;
+      background: rgba(255,255,255,0.2);
+      border-radius: 6px; padding: 4px 8px;
+      color: rgba(255,255,255,0.7); font-size: 10px;
+    }
+    .ss-tabs {
+      background: #1565C0;
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 0 8px;
+    }
+    .ss-tab {
+      flex: 1; text-align: center; padding: 8px 0;
+      color: rgba(255,255,255,0.6); font-size: 9px; font-weight: 600;
+      cursor: pointer;
+    }
+    .ss-tab.active {
+      color: white;
+      border-bottom: 2px solid #64B5F6;
+    }
+    .ss-content { padding: 10px 10px; }
+    .ss-section-label { font-size: 9px; font-weight: 700; color: #9CA3AF; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .ss-course-item {
+      background: white; border-radius: 8px; padding: 8px 10px;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+      border: 1px solid #E8EAF0;
+    }
+    .ss-thumb {
+      width: 40px; height: 40px; border-radius: 6px;
+      background: linear-gradient(135deg, #1565C0, #42A5F5);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 16px; flex-shrink: 0;
+    }
+    .ss-course-info { flex: 1; min-width: 0; }
+    .ss-course-name { font-size: 9px; font-weight: 700; color: #1A1A2E; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ss-course-meta { font-size: 8px; color: #9CA3AF; margin-bottom: 4px; }
+    .ss-progress-bar { background: #F0F0F5; height: 4px; border-radius: 99px; overflow: hidden; }
+    .ss-progress-fill { height: 100%; background: linear-gradient(90deg, #1565C0, #42A5F5); border-radius: 99px; }
+    .ss-pct { font-size: 10px; font-weight: 800; color: #1565C0; flex-shrink: 0; }
+    .ss-mission {
+      background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+      border-radius: 8px; padding: 8px 10px; margin-bottom: 8px;
+      border: 1px solid #90CAF9;
+    }
+    .ss-mission-label { font-size: 8px; font-weight: 700; color: #1565C0; margin-bottom: 4px; }
+    .ss-mission-text { font-size: 9px; color: #1565C0; font-weight: 600; }
+    .ss-bottom-nav {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: white; border-top: 1px solid #E8EAF0;
+      display: flex; padding: 6px 0;
+    }
+    .ss-nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; font-size: 8px; color: #9CA3AF;
+    }
+    .ss-nav-item.active { color: #1565C0; }
+    .ss-nav-icon { font-size: 14px; }
+
+    /* ===== SMARTSTUDY SCREEN ===== */
+    .smart-screen { background: #1a1a2e; min-height: 480px; position: relative; }
+    .smart-header {
+      background: #16213E;
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .smart-title { color: white; font-size: 11px; font-weight: 700; }
+    .smart-tabs {
+      display: flex; border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: #16213E;
+    }
+    .smart-tab {
+      flex: 1; text-align: center; padding: 6px;
+      color: rgba(255,255,255,0.4); font-size: 9px; font-weight: 600;
+    }
+    .smart-tab.active { color: #00E5FF; border-bottom: 2px solid #00E5FF; }
+    .smart-date-row {
+      background: #0F3460;
+      padding: 8px 14px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px;
+    }
+    .smart-date-btn { color: rgba(255,255,255,0.4); font-size: 14px; cursor: pointer; }
+    .smart-date-text { color: white; font-size: 10px; font-weight: 700; }
+    .smart-progress-area {
+      padding: 14px 12px 8px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .smart-donut-wrap { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .smart-donut-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .smart-donut-pct { font-size: 14px; font-weight: 800; color: white; line-height: 1; }
+    .smart-donut-sub { font-size: 7px; color: rgba(255,255,255,0.6); }
+    .smart-time-list { flex: 1; }
+    .smart-time-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .smart-time-label { font-size: 8px; color: rgba(255,255,255,0.6); }
+    .smart-time-val { font-size: 10px; font-weight: 700; color: white; font-family: monospace; }
+    .smart-tasks-label {
+      padding: 8px 12px 4px;
+      font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .smart-task-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .smart-play {
+      width: 24px; height: 24px; background: #00BCD4;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .smart-play-icon { color: white; font-size: 10px; margin-left: 2px; }
+    .smart-task-name { font-size: 9px; color: rgba(255,255,255,0.85); }
+    .smart-task-time { font-size: 8px; color: rgba(255,255,255,0.4); margin-left: auto; }
+    .smart-bottom-nav {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #16213E; border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex; padding: 6px 0 8px;
+    }
+    .smart-nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; font-size: 7px; color: rgba(255,255,255,0.4);
+    }
+    .smart-nav-item.active { color: #00E5FF; }
+    .smart-nav-icon { font-size: 12px; }
+
+    /* ===== NATIVE CAMP SCREEN ===== */
+    .nc-screen { background: #0A0A0A; min-height: 480px; position: relative; }
+    .nc-header {
+      background: #141414;
+      padding: 10px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nc-logo { color: white; font-size: 12px; font-weight: 800; }
+    .nc-logo span { color: #E50914; }
+    .nc-avatar { width: 24px; height: 24px; background: #333; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-size: 11px; }
+    .nc-tab-row {
+      display: flex; gap: 0;
+      background: #141414; border-bottom: 1px solid #222;
+    }
+    .nc-tab {
+      flex: 1; padding: 8px 4px; text-align: center;
+      font-size: 8px; font-weight: 600; color: #666;
+    }
+    .nc-tab.active { color: white; border-bottom: 2px solid white; }
+    .nc-hero {
+      background: linear-gradient(180deg, #1a1a1a, #0A0A0A);
+      padding: 16px 12px 12px;
+      text-align: center;
+    }
+    .nc-hero-title { color: rgba(255,255,255,0.5); font-size: 8px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .nc-hero-btn {
+      background: white; color: black;
+      border-radius: 4px; padding: 8px 0; font-size: 11px; font-weight: 700;
+      display: block; text-align: center; margin-top: 8px;
+    }
+    .nc-stats-row {
+      display: flex; gap: 1px; margin: 1px 0;
+    }
+    .nc-stat-box {
+      flex: 1; background: #1a1a1a; padding: 10px 6px; text-align: center;
+    }
+    .nc-stat-val { color: white; font-size: 16px; font-weight: 800; }
+    .nc-stat-label { color: #666; font-size: 7px; margin-top: 2px; }
+    .nc-section-title {
+      color: white; font-size: 10px; font-weight: 700; padding: 12px 12px 6px;
+    }
+    .nc-lesson-item {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-bottom: 1px solid #1a1a1a;
+    }
+    .nc-lesson-thumb {
+      width: 48px; height: 32px; background: #222; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+    }
+    .nc-lesson-info { flex: 1; }
+    .nc-lesson-name { color: white; font-size: 9px; font-weight: 600; margin-bottom: 2px; }
+    .nc-lesson-meta { color: #555; font-size: 8px; }
+    .nc-progress-section { padding: 0 12px 12px; }
+    .nc-prog-item { margin-bottom: 8px; }
+    .nc-prog-label { display: flex; justify-content: space-between; margin-bottom: 3px; }
+    .nc-prog-name { color: rgba(255,255,255,0.7); font-size: 8px; }
+    .nc-prog-pct { color: white; font-size: 8px; font-weight: 700; }
+    .nc-prog-bar { background: #2a2a2a; height: 4px; border-radius: 99px; }
+    .nc-prog-fill { height: 100%; background: white; border-radius: 99px; }
+    .nc-bottom-nav {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: #0A0A0A; border-top: 1px solid #1a1a1a;
+      display: flex; padding: 6px 0 8px;
+    }
+    .nc-nav-item {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; gap: 2px; font-size: 7px; color: #444;
+    }
+    .nc-nav-item.active { color: white; }
+    .nc-nav-icon { font-size: 14px; }
+
+    /* RIGHT SIDE: cards */
+    .cards-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .card {
+      background: white; border-radius: 12px; padding: 16px 18px;
+      border: 1px solid #E8EAF0; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .card-emoji { font-size: 18px; margin-bottom: 8px; }
+    .card-title { font-size: 13px; font-weight: 700; color: #1A1A2E; margin-bottom: 5px; }
+    .card-desc { font-size: 12px; color: #6B7280; line-height: 1.7; }
+    .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .takeaway {
+      border-radius: 12px; padding: 14px 18px;
+      display: flex; align-items: flex-start; gap: 10px; margin-top: 4px;
+    }
+    .takeaway-green  { background: #ECFDF5; border-left: 4px solid #10B981; }
+    .takeaway-blue   { background: #EFF6FF; border-left: 4px solid #3B82F6; }
+    .takeaway-dark   { background: #F3F4F6; border-left: 4px solid #6B7280; }
+    .takeaway-label  { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 3px; }
+    .takeaway-text   { font-size: 12px; color: #374151; line-height: 1.7; }
+    .takeaway-icon   { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+    /* SECTION HEADER */
+    .section-header {
+      font-size: 17px; font-weight: 800; color: #1A1A2E;
+      margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+    }
+
+    /* COMPARISON */
+    .compare-section { margin-top: 48px; }
+    table {
+      width: 100%; border-collapse: collapse; background: white;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06); border: 1px solid #E8EAF0;
+    }
+    th { background: #1A1A2E; color: white; padding: 13px 16px; text-align: left; font-size: 13px; font-weight: 600; }
+    th:first-child { width: 22%; }
+    td { padding: 12px 16px; font-size: 13px; color: #374151; border-bottom: 1px solid #F0F2F5; vertical-align: top; line-height: 1.6; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #FAFBFC; }
+    td:first-child { font-weight: 700; color: #1A1A2E; }
+    .check { color: #10B981; font-weight: 700; }
+    .cross { color: #EF4444; }
+    .partial { color: #F59E0B; font-weight: 600; }
+
+    /* INSIGHT */
+    .insight-box {
+      background: linear-gradient(135deg, #1A1A2E, #16213E);
+      border-radius: 16px; padding: 28px 32px; margin-top: 28px; color: white;
+    }
+    .insight-box h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; color: #FF6B35; }
+    .insight-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .insight-list li {
+      font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6;
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .insight-list li::before { content: '→'; color: #FF6B35; font-weight: 700; flex-shrink: 0; }
+
+    /* INTRO BAR */
+    .intro-bar {
+      background: white; border-radius: 14px; padding: 18px 24px;
+      margin-bottom: 36px; border: 1px solid #E8EAF0;
+      display: flex; gap: 32px;
+    }
+    .intro-item { flex: 1; }
+    .intro-label { font-size: 11px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .intro-value { font-size: 13px; color: #1A1A2E; line-height: 1.6; }
+
+    @media (max-width: 700px) {
+      .service-body { grid-template-columns: 1fr; }
+      .card-grid-2 { grid-template-columns: 1fr; }
+      .intro-bar { flex-direction: column; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>ダッシュボード リサーチまとめ<span>2026.03.23</span></h1>
+  <div class="tag">Englishおさる CS</div>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <div class="intro-bar">
+    <div class="intro-item">
+      <div class="intro-label">リサーチ目的</div>
+      <div class="intro-value">会員様向けダッシュボードの設計に向け、同カテゴリの主要サービスのUI・UX設計を調査し参考にすべき要素を抽出する</div>
+    </div>
+    <div class="intro-item">
+      <div class="intro-label">調査対象</div>
+      <div class="intro-value">スタディサプリ / SmartStudy / ネイティブキャンプ</div>
+    </div>
+    <div class="intro-item">
+      <div class="intro-label">主な表示データ</div>
+      <div class="intro-value">動画視聴率・課題達成率・学習時間・ログイン日時</div>
+    </div>
+  </div>
+
+  <!-- ========== スタディサプリ ========== -->
+  <div class="service-block">
+    <div class="service-header">
+      <div class="service-icon icon-green">📗</div>
+      <div class="service-title-wrap">
+        <h2>スタディサプリ</h2>
+        <p>リクルート / 小学生〜社会人向け / グッドデザイン賞2024受賞</p>
+      </div>
+    </div>
+
+    <div class="service-body">
+      <!-- PHONE MOCKUP -->
+      <div class="phone-wrap">
+        <div class="phone-label">マイ講座 画面</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen ss-screen">
+            <!-- header -->
+            <div class="ss-header">
+              <div class="ss-logo">スタサプ</div>
+              <div class="ss-search">🔍 検索</div>
+            </div>
+            <!-- tabs -->
+            <div class="ss-tabs">
+              <div class="ss-tab">講座一覧</div>
+              <div class="ss-tab active">マイ講座</div>
+              <div class="ss-tab">お知らせ</div>
+              <div class="ss-tab">マイページ</div>
+            </div>
+            <!-- content -->
+            <div class="ss-content">
+              <!-- mission -->
+              <div class="ss-mission">
+                <div class="ss-mission-label">🎯 今日のミッション</div>
+                <div class="ss-mission-text">Unit 8「数学IA」を視聴して課題を提出！</div>
+              </div>
+              <div class="ss-section-label">学習中のコース</div>
+              <!-- course items -->
+              <div class="ss-course-item">
+                <div class="ss-thumb">📐</div>
+                <div class="ss-course-info">
+                  <div class="ss-course-name">数学IA 基礎マスター</div>
+                  <div class="ss-course-meta">高2 | 全24講義</div>
+                  <div class="ss-progress-bar"><div class="ss-progress-fill" style="width:72%"></div></div>
+                </div>
+                <div class="ss-pct">72%</div>
+              </div>
+              <div class="ss-course-item">
+                <div class="ss-thumb">📝</div>
+                <div class="ss-course-info">
+                  <div class="ss-course-name">現代文 読解力強化</div>
+                  <div class="ss-course-meta">高2 | 全18講義</div>
+                  <div class="ss-progress-bar"><div class="ss-progress-fill" style="width:45%"></div></div>
+                </div>
+                <div class="ss-pct">45%</div>
+              </div>
+              <div class="ss-course-item">
+                <div class="ss-thumb">🌏</div>
+                <div class="ss-course-info">
+                  <div class="ss-course-name">英語 長文読解</div>
+                  <div class="ss-course-meta">高2 | 全30講義</div>
+                  <div class="ss-progress-bar"><div class="ss-progress-fill" style="width:28%"></div></div>
+                </div>
+                <div class="ss-pct">28%</div>
+              </div>
+            </div>
+            <!-- bottom nav -->
+            <div class="ss-bottom-nav">
+              <div class="ss-nav-item"><div class="ss-nav-icon">🏠</div>ホーム</div>
+              <div class="ss-nav-item active"><div class="ss-nav-icon">📚</div>マイ講座</div>
+              <div class="ss-nav-item"><div class="ss-nav-icon">🔔</div>通知</div>
+              <div class="ss-nav-item"><div class="ss-nav-icon">👤</div>マイページ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="cards-wrap">
+        <div class="card-grid-2">
+          <div class="card">
+            <div class="card-emoji">🎯</div>
+            <div class="card-title">コース別カスタマイズ表示</div>
+            <div class="card-desc">合格特訓コース→「今週の課題」、ベーシックコース→「おすすめ講座」を最上部に表示。受講コースでUIを切り替える。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">🧠</div>
+            <div class="card-title">忘却曲線ベースの復習</div>
+            <div class="card-desc">「忘れた頃に課題が配信される」仕組み。学習タイミングを自動で予測し、復習タスクを自動生成。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">🏆</div>
+            <div class="card-title">ミッション機能</div>
+            <div class="card-desc">個人の進捗に沿ったミッションを配信。「何をすべきか迷わない」導線設計＋間違えた問題の解き直しサポート。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">🎨</div>
+            <div class="card-title">カラー&デザイン設計</div>
+            <div class="card-desc">明度が高いブルー系配色。幅広いユーザー層に対応したデザインシステムを構築。2024グッドデザイン賞受賞。</div>
+          </div>
+        </div>
+        <div class="takeaway takeaway-green">
+          <div class="takeaway-icon">✅</div>
+          <div>
+            <div class="takeaway-label">Englishおさるへの示唆</div>
+            <div class="takeaway-text">コース・進捗フェーズによって表示コンテンツを変える「パーソナライズ」が核心。ミッション型の「今日やること」提示が継続率に直結。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SmartStudy ========== -->
+  <div class="service-block">
+    <div class="service-header">
+      <div class="service-icon icon-blue">📘</div>
+      <div class="service-title-wrap">
+        <h2>SmartStudy</h2>
+        <p>受験生向け学習管理アプリ / タスク・スケジュール自動最適化</p>
+      </div>
+    </div>
+
+    <div class="service-body">
+      <!-- PHONE MOCKUP -->
+      <div class="phone-wrap">
+        <div class="phone-label">学習状況&タスク 画面</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen smart-screen">
+            <div class="smart-header">
+              <div class="smart-title">学習状況とタスク</div>
+              <div style="color:rgba(255,255,255,0.4);font-size:10px;">⚙️</div>
+            </div>
+            <div class="smart-tabs">
+              <div class="smart-tab" style="font-size:8px;padding:6px 2px;">3<br><span style="font-size:7px;opacity:.5">先日</span></div>
+              <div class="smart-tab" style="font-size:8px;padding:6px 2px;">2<br><span style="font-size:7px;opacity:.5">昨日</span></div>
+              <div class="smart-tab active" style="font-size:8px;padding:6px 2px;">1<br><span style="font-size:7px;color:#00E5FF;">本日</span></div>
+              <div class="smart-tab" style="font-size:8px;padding:6px 2px;">+1<br><span style="font-size:7px;opacity:.5">明日</span></div>
+            </div>
+            <div class="smart-date-row">
+              <div class="smart-date-btn">‹</div>
+              <div class="smart-date-text">4月24日（木）</div>
+              <div class="smart-date-btn">›</div>
+            </div>
+            <!-- DONUT + TIME -->
+            <div class="smart-progress-area">
+              <!-- SVG Donut -->
+              <div class="smart-donut-wrap">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#0F3460" stroke-width="12"/>
+                  <circle cx="50" cy="50" r="38" fill="none" stroke="#00BCD4" stroke-width="12"
+                    stroke-dasharray="85 154" stroke-dashoffset="38"
+                    stroke-linecap="round" transform="rotate(-90 50 50)"/>
+                </svg>
+                <div class="smart-donut-label">
+                  <div class="smart-donut-pct">32%</div>
+                  <div class="smart-donut-sub">進捗状況</div>
+                </div>
+              </div>
+              <!-- time breakdown -->
+              <div class="smart-time-list">
+                <div class="smart-time-row">
+                  <div class="smart-time-label">本日の勉強時間</div>
+                  <div class="smart-time-val">01:33</div>
+                </div>
+                <div class="smart-time-row">
+                  <div class="smart-time-label">残り勉強時間</div>
+                  <div class="smart-time-val">01:03</div>
+                </div>
+                <div class="smart-time-row">
+                  <div class="smart-time-label">終了した時間</div>
+                  <div class="smart-time-val">00:30</div>
+                </div>
+                <div class="smart-time-row">
+                  <div class="smart-time-label">進捗の勉強時間</div>
+                  <div class="smart-time-val">00:30</div>
+                </div>
+              </div>
+            </div>
+            <!-- tasks -->
+            <div class="smart-tasks-label">今からやるタスク</div>
+            <div class="smart-task-item">
+              <div class="smart-play"><div class="smart-play-icon">▶</div></div>
+              <div class="smart-task-name">英語長文：はじめての人</div>
+              <div class="smart-task-time">30分</div>
+            </div>
+            <div class="smart-task-item">
+              <div class="smart-play"><div class="smart-play-icon">▶</div></div>
+              <div class="smart-task-name">大岩のいちばんはじめの英文法</div>
+              <div class="smart-task-time">30分</div>
+            </div>
+            <div style="padding:6px 12px;font-size:8px;color:rgba(255,255,255,0.3);">既に終わったタスク</div>
+            <!-- bottom nav -->
+            <div class="smart-bottom-nav">
+              <div class="smart-nav-item active"><div class="smart-nav-icon">📋</div>タスク</div>
+              <div class="smart-nav-item"><div class="smart-nav-icon">📅</div>カレンダー</div>
+              <div class="smart-nav-item"><div class="smart-nav-icon">➕</div>追加</div>
+              <div class="smart-nav-item"><div class="smart-nav-icon">📖</div>教材</div>
+              <div class="smart-nav-item"><div class="smart-nav-icon">📊</div>レポート</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="cards-wrap">
+        <div class="card-grid-2">
+          <div class="card">
+            <div class="card-emoji">🔵</div>
+            <div class="card-title">ドーナツ円グラフ（進捗%）</div>
+            <div class="card-desc">画面中央に大きな円グラフで「進捗状況 32%」を表示。視覚的インパクトが強く、達成感を直感的に伝える。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">⏱️</div>
+            <div class="card-title">時間の多面的な表示</div>
+            <div class="card-desc">「本日の勉強時間・残り・終了・進捗」を4行で細かく表示。時間軸での自己管理を徹底サポート。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">📋</div>
+            <div class="card-title">タスク一覧との統合</div>
+            <div class="card-desc">進捗グラフの直下にやることリスト。「見る→やる」が1画面で完結。スワイプで過去・未来も確認可能。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">📊</div>
+            <div class="card-title">週次レポート（棒グラフ）</div>
+            <div class="card-desc">別タブ「レポート」で今週/先週の勉強時間・達成率を棒グラフで比較。週単位の振り返りを仕組み化。</div>
+          </div>
+        </div>
+        <div class="takeaway takeaway-blue">
+          <div class="takeaway-icon">✅</div>
+          <div>
+            <div class="takeaway-label">Englishおさるへの示唆</div>
+            <div class="takeaway-text">「%達成率」を大きな円グラフで見せる手法は進捗実感に効果的！時間+達成率の二軸表示＋週次レポートで継続モチベーションを構造化できる。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== ネイティブキャンプ ========== -->
+  <div class="service-block">
+    <div class="service-header">
+      <div class="service-icon icon-dark">🌐</div>
+      <div class="service-title-wrap">
+        <h2>ネイティブキャンプ</h2>
+        <p>オンライン英会話 / 累計150万DL超 / 24時間レッスン対応</p>
+      </div>
+    </div>
+
+    <div class="service-body">
+      <!-- PHONE MOCKUP -->
+      <div class="phone-wrap">
+        <div class="phone-label">マイページ&学習進捗 画面</div>
+        <div class="phone">
+          <div class="phone-notch"></div>
+          <div class="phone-screen nc-screen">
+            <div class="nc-header">
+              <div class="nc-logo">Native<span>Camp</span></div>
+              <div class="nc-avatar">田</div>
+            </div>
+            <div class="nc-tab-row">
+              <div class="nc-tab active">ホーム</div>
+              <div class="nc-tab">レッスン</div>
+              <div class="nc-tab">教材</div>
+              <div class="nc-tab">マイページ</div>
+            </div>
+            <!-- CTA -->
+            <div class="nc-hero">
+              <div class="nc-hero-title">今すぐレッスンを開始</div>
+              <div class="nc-hero-btn">▶ 今すぐレッスン</div>
+            </div>
+            <!-- stats -->
+            <div class="nc-stats-row">
+              <div class="nc-stat-box">
+                <div class="nc-stat-val">148</div>
+                <div class="nc-stat-label">総レッスン数</div>
+              </div>
+              <div class="nc-stat-box">
+                <div class="nc-stat-val">74h</div>
+                <div class="nc-stat-label">総学習時間</div>
+              </div>
+              <div class="nc-stat-box">
+                <div class="nc-stat-val">23🔥</div>
+                <div class="nc-stat-label">連続日数</div>
+              </div>
+            </div>
+            <!-- progress bars -->
+            <div class="nc-section-title">学習進行状況</div>
+            <div class="nc-progress-section">
+              <div class="nc-prog-item">
+                <div class="nc-prog-label">
+                  <div class="nc-prog-name">日常英会話コース</div>
+                  <div class="nc-prog-pct">68%</div>
+                </div>
+                <div class="nc-prog-bar"><div class="nc-prog-fill" style="width:68%"></div></div>
+              </div>
+              <div class="nc-prog-item">
+                <div class="nc-prog-label">
+                  <div class="nc-prog-name">ビジネス英語</div>
+                  <div class="nc-prog-pct">32%</div>
+                </div>
+                <div class="nc-prog-bar"><div class="nc-prog-fill" style="width:32%"></div></div>
+              </div>
+              <div class="nc-prog-item">
+                <div class="nc-prog-label">
+                  <div class="nc-prog-name">発音トレーニング</div>
+                  <div class="nc-prog-pct">15%</div>
+                </div>
+                <div class="nc-prog-bar"><div class="nc-prog-fill" style="width:15%"></div></div>
+              </div>
+            </div>
+            <!-- recent lessons -->
+            <div class="nc-section-title">最近のレッスン</div>
+            <div class="nc-lesson-item">
+              <div class="nc-lesson-thumb">🎤</div>
+              <div class="nc-lesson-info">
+                <div class="nc-lesson-name">フリートーク（John先生）</div>
+                <div class="nc-lesson-meta">3月22日 21:00 ・ 25分</div>
+              </div>
+            </div>
+            <div class="nc-lesson-item">
+              <div class="nc-lesson-thumb">📖</div>
+              <div class="nc-lesson-info">
+                <div class="nc-lesson-name">ビジネス英語 Unit 4</div>
+                <div class="nc-lesson-meta">3月21日 20:30 ・ 25分</div>
+              </div>
+            </div>
+            <!-- bottom nav -->
+            <div class="nc-bottom-nav">
+              <div class="nc-nav-item active"><div class="nc-nav-icon">🏠</div>ホーム</div>
+              <div class="nc-nav-item"><div class="nc-nav-icon">🎤</div>レッスン</div>
+              <div class="nc-nav-item"><div class="nc-nav-icon">📖</div>教材</div>
+              <div class="nc-nav-item"><div class="nc-nav-icon">👤</div>マイページ</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARDS -->
+      <div class="cards-wrap">
+        <div class="card-grid-2">
+          <div class="card">
+            <div class="card-emoji">🖤</div>
+            <div class="card-title">Netflix風ダークデザイン</div>
+            <div class="card-desc">白黒ベースのシックなデザイン。コンテンツを前面に出し、UIが主張しすぎない。読みやすいフォントを採用。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">⚡</div>
+            <div class="card-title">レッスンへの最短導線</div>
+            <div class="card-desc">アプリを開いた瞬間から「今すぐレッスン」ボタンが目立つ位置に。「開く→学習開始」の摩擦を極限まで削減。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">📈</div>
+            <div class="card-title">数字で見せる実績</div>
+            <div class="card-desc">総レッスン数・総学習時間・連続日数を3カラムで並列表示。積み上げた実績を数字で可視化し達成感を演出。</div>
+          </div>
+          <div class="card">
+            <div class="card-emoji">📊</div>
+            <div class="card-title">コース別プログレスバー</div>
+            <div class="card-desc">受講中の各コースの進捗をホワイトのバーで表示。ダークな背景との対比でシンプルかつ見やすい設計。</div>
+          </div>
+        </div>
+        <div class="takeaway takeaway-dark">
+          <div class="takeaway-icon">✅</div>
+          <div>
+            <div class="takeaway-label">Englishおさるへの示唆</div>
+            <div class="takeaway-text">「コンテンツへの最短導線」と「積み上げ実績の数値表示」が継続率を支えている。ダッシュボードに情報を詰め込みすぎず、続きから学習するCTAを最上位に配置する設計が有効！</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="compare-section">
+    <div class="section-header">📊 機能比較表</div>
+    <table>
+      <thead>
+        <tr>
+          <th>機能・設計要素</th>
+          <th>スタディサプリ</th>
+          <th>SmartStudy</th>
+          <th>ネイティブキャンプ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>進捗率（%）表示</td>
+          <td><span class="check">◎</span> チャプター単位プログレスバー</td>
+          <td><span class="check">◎</span> 大型ドーナツグラフ</td>
+          <td><span class="check">○</span> コース別バー表示</td>
+        </tr>
+        <tr>
+          <td>学習時間の可視化</td>
+          <td><span class="partial">△</span> 間接的</td>
+          <td><span class="check">◎</span> 4項目で詳細表示</td>
+          <td><span class="check">○</span> 累計時間（数字）</td>
+        </tr>
+        <tr>
+          <td>グラフ種別</td>
+          <td><span class="partial">△</span> プログレスバーのみ</td>
+          <td><span class="check">◎</span> 円グラフ＋週次棒グラフ</td>
+          <td><span class="partial">△</span> プログレスバーのみ</td>
+        </tr>
+        <tr>
+          <td>週次・月次レポート</td>
+          <td><span class="partial">△</span> 一部あり</td>
+          <td><span class="check">◎</span> 今週vs先週の比較</td>
+          <td><span class="cross">×</span> 非公開</td>
+        </tr>
+        <tr>
+          <td>ゲーミフィケーション</td>
+          <td><span class="check">◎</span> ミッション・バッジ</td>
+          <td><span class="partial">△</span> 達成率のみ</td>
+          <td><span class="check">○</span> 連続日数・ランキング</td>
+        </tr>
+        <tr>
+          <td>次のアクション誘導</td>
+          <td><span class="check">◎</span> ミッション提示</td>
+          <td><span class="check">○</span> タスク一覧</td>
+          <td><span class="check">◎</span> 即レッスンCTA最上位</td>
+        </tr>
+        <tr>
+          <td>デザインテイスト</td>
+          <td>ブルー系・清潔感・高明度</td>
+          <td>ダーク系・シアン強調・モノクロ</td>
+          <td>Netflix風・黒ベース・シンプル</td>
+        </tr>
+        <tr>
+          <td>モバイル操作性</td>
+          <td><span class="check">◎</span></td>
+          <td><span class="check">◎</span> スワイプで日付移動</td>
+          <td><span class="check">◎</span> アプリ主体</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <h3>Englishおさるダッシュボードに取り込むべき設計要素</h3>
+      <ul class="insight-list">
+        <li>「続きから学習する」CTAをダッシュボード最上位に固定（ネイティブキャンプ参考）</li>
+        <li>動画視聴率をドーナツ円グラフで大きく見せる＋学習時間を数字で並列表示（SmartStudy参考）</li>
+        <li>週次・月次の棒グラフで「先週比較」を表示し定期的な振り返りを促す（SmartStudy参考）</li>
+        <li>総レッスン数・総学習時間・連続日数を3カラムの数字カードで表示（ネイティブキャンプ参考）</li>
+        <li>連続学習日数（ストリーク）やバッジでゲーミフィケーション（スタディサプリ参考）</li>
+        <li>進捗フェーズ（初期・中期・完了直前）に応じて表示コンテンツを切り替えるパーソナライズ（スタディサプリ参考）</li>
+      </ul>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
